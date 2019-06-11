@@ -160,7 +160,7 @@ std::vector<Frontier> FrontierSearch::searchFrom(geometry_msgs::Point position)
   return frontier_list;
 }
 
-std::vector<Frontier> FrontierSearch::buildNewFrontier(unsigned int initial_cell,
+Frontier FrontierSearch::buildNewFrontier(unsigned int initial_cell,
                                           unsigned int reference,
                                           std::vector<bool>& frontier_flag)
 {
