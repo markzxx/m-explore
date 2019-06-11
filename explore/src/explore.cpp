@@ -188,6 +188,7 @@ void Explore::makePlan()
       ROS_DEBUG("frontier %zd cost: %f", i, frontiers[i].cost);
     }
 
+    frontier_exploration::Frontier frontier;
     if (frontiers.empty()) {
       // stop();
       this->finished = true;
@@ -202,7 +203,7 @@ void Explore::makePlan()
     }
 
     // find non blacklisted frontier
-    frontier_exploration::Frontier frontier =
+    frontier =
         std::find_if_not(frontiers.begin(), frontiers.end(),
                          [this](const frontier_exploration::Frontier& f) {
                            return goalOnBlacklist(f.centroid);
@@ -218,7 +219,7 @@ void Explore::makePlan()
   }
   else{
     this->index = (this->index + 1) % this->list.size();
-    auto frontier = this->list[this->index];
+    frontier = this->list[this->index];
   }
   geometry_msgs::Point target_position = frontier->centroid;
 
