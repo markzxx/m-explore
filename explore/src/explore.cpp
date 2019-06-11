@@ -179,6 +179,7 @@ void Explore::visualizeFrontiers(
 void Explore::makePlan()
 {
   // find frontiers
+  beginning:
   frontier_exploration::Frontier frontier;
   if (!finished){
     auto pose = costmap_client_.getRobotPose();
@@ -249,8 +250,9 @@ void Explore::makePlan()
       frontier_blacklist_.clear();
       this->finished = false;
       search_.reset();
-      makePlan();
-      return;
+      // makePlan();
+      // return;
+      goto beginning;
     }
     frontier = *frontier_iter;
   }

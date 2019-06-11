@@ -89,7 +89,7 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
           cnt++;
         }
       }
-      if (cnt >= 100) break;      
+      if (cnt >= 1000) break;      
     }
     auto frontier = buildNewFrontier(nbr, pos, frontier_flag);
     frontiers.push_back(frontier);
