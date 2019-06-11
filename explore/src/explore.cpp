@@ -179,6 +179,7 @@ void Explore::visualizeFrontiers(
 void Explore::makePlan()
 {
   // find frontiers
+  frontier_exploration::Frontier frontier;
   if (!this->finished){
     auto pose = costmap_client_.getRobotPose();
     // get frontiers sorted according to cost
@@ -188,7 +189,6 @@ void Explore::makePlan()
       ROS_DEBUG("frontier %zd cost: %f", i, frontiers[i].cost);
     }
 
-    frontier_exploration::Frontier frontier;
     if (frontiers.empty()) {
       // stop();
       this->finished = true;
