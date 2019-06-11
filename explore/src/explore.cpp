@@ -240,12 +240,12 @@ void Explore::makePlan()
     prev_distance_ = frontier.min_distance;
   }
   // black list if we've made no progress for a long time
-  if (ros::Time::now() - last_progress_ > progress_timeout_) {
-    frontier_blacklist_.push_back(target_position);
-    ROS_DEBUG("Adding current goal to black list");
-    makePlan();
-    return;
-  }
+  // if (ros::Time::now() - last_progress_ > progress_timeout_) {
+  //   frontier_blacklist_.push_back(target_position);
+  //   ROS_DEBUG("Adding current goal to black list");
+  //   makePlan();
+  //   return;
+  // }
 
   // we don't need to do anything if we still pursuing the same goal
   if (same_goal) {
