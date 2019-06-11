@@ -230,9 +230,12 @@ void Explore::makePlan()
     return;
   }
 
+  geometry_msgs::Point p;
+  p.x=0;
+  p.y=0;
   // send goal to move_base if we have something new to pursue
   move_base_msgs::MoveBaseGoal goal;
-  goal.target_pose.pose.position = geometry_msgs::Point(0, 0);
+  goal.target_pose.pose.position = p;
   goal.target_pose.pose.orientation.w = 1.;
   goal.target_pose.header.frame_id = costmap_client_.getGlobalFrameID();
   goal.target_pose.header.stamp = ros::Time::now();
