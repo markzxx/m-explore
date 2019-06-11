@@ -179,33 +179,44 @@ void Explore::visualizeFrontiers(
 void Explore::makePlan()
 {
   // find frontiers
-  auto pose = costmap_client_.getRobotPose();
-  // get frontiers sorted according to cost
-  auto frontiers = search_.searchFrom(pose.position);
-  ROS_DEBUG("found %lu frontiers", frontiers.size());
-  for (size_t i = 0; i < frontiers.size(); ++i) {
-    ROS_DEBUG("frontier %zd cost: %f", i, frontiers[i].cost);
-  }
+  if (!this->finished){
+    auto pose = costmap_client_.getRobotPose();
+    // get frontiers sorted according to cost
+    auto frontiers = search_.searchFrom(pose.position);
+    ROS_DEBUG("found %lu frontiers", frontiers.size());
+    for (size_t i = 0; i < frontiers.size(); ++i) {
+      ROS_DEBUG("frontier %zd cost: %f", i, frontiers[i].cost);
+    }
 
-  if (frontiers.empty()) {
-    stop();
-    return;
-  }
+    if (frontiers.empty()) {
+      // stop();
+      this->finished = true;
+      ROS_DEBUG("[Boris]FINISHED!");
+      return;
+    }
 
-  // publish frontiers as visualization markers
-  if (visualize_) {
-    visualizeFrontiers(frontiers);
-  }
+    // publish frontiers as visualization markers
+    if (visualize_) {
+      visualizeFrontiers(frontiers);
+    }
 
-  // find non blacklisted frontier
-  auto frontier =
-      std::find_if_not(frontiers.begin(), frontiers.end(),
-                       [this](const frontier_exploration::Frontier& f) {
-                         return goalOnBlacklist(f.centroid);
-                       });
-  if (frontier == frontiers.end()) {
-    stop();
-    return;
+    // find non blacklisted frontier
+    auto frontier =
+        std::find_if_not(frontiers.begin(), frontiers.end(),
+                         [this](const frontier_exploration::Frontier& f) {
+                           return goalOnBlacklist(f.centroid);
+                         });
+    if (frontier == frontiers.end()) {
+      // stop();
+      this->finished = true;
+      ROS_DEBUG("[Boris]FINISHED!");
+      return;
+    }
+    this->list.push_back(frontier);
+  }
+  else{
+    this->index = (this->index + 1) % this->list.size();
+    auto frontier = this->list[this->index];
   }
   geometry_msgs::Point target_position = frontier->centroid;
 
