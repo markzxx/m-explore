@@ -188,7 +188,7 @@ void Explore::makePlan()
   }
 
   if (frontiers.empty()) {
-    makePlan();
+    stop();
     return;
   }
 
@@ -204,7 +204,7 @@ void Explore::makePlan()
                          return goalOnBlacklist(f.centroid);
                        });
   if (frontier == frontiers.end()) {
-    makePlan();
+    stop();
     return;
   }
   geometry_msgs::Point target_position = frontier->centroid;
@@ -212,7 +212,7 @@ void Explore::makePlan()
   // time out if we are not making any progress
   bool same_goal = prev_goal_ == target_position;
   prev_goal_ = target_position;
-  if (!same_goal) {
+  if (!same_goal || prev_distance_ > frontier->min_distance) {
     // we have different goal or we made some progress
     last_progress_ = ros::Time::now();
     prev_distance_ = frontier->min_distance;
