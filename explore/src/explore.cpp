@@ -215,12 +215,12 @@ void Explore::makePlan()
       makePlan();
       return;
     }
-    this->list.push_back(*frontier);
+    front_list.push_back(*frontier);
     frontier = *frontier_iter;
   }
   else{
-    index = (index + 1) % list.size();
-    frontier = list[index];
+    index = (index + 1) % front_list.size();
+    frontier = front_list[index];
   }
 
   geometry_msgs::Point target_position = frontier.centroid;
