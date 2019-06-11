@@ -179,7 +179,7 @@ void Explore::visualizeFrontiers(
 void Explore::makePlan()
 {
   // find frontiers
-  vector<Frontier>::iterator frontier;
+  Frontier frontier;
   if (!this->finished){
     auto pose = costmap_client_.getRobotPose();
     // get frontiers sorted according to cost
@@ -203,33 +203,34 @@ void Explore::makePlan()
     }
 
     // find non blacklisted frontier
-    frontier =
+    frontier_iter =
         std::find_if_not(frontiers.begin(), frontiers.end(),
                          [this](const frontier_exploration::Frontier& f) {
                            return goalOnBlacklist(f.centroid);
                          });
-    if (frontier == frontiers.end()) {
+    if (frontier_iter == frontiers.end()) {
       // stop();
       this->finished = true;
       ROS_DEBUG("[Boris]FINISHED!");
       makePlan();
       return;
     }
-    this->list.push_back(frontier);
+    this->list.push_back(*frontier);
+    frontier = *frontier_iter;
   }
   else{
     this->index = (this->index + 1) % this->list.size();
-    frontier = this->list[this->index];
+    frontier = &this->list[this->index];
   }
-  geometry_msgs::Point target_position = frontier->centroid;
+  geometry_msgs::Point target_position = frontier.centroid;
 
   // time out if we are not making any progress
   bool same_goal = prev_goal_ == target_position;
   prev_goal_ = target_position;
-  if (!same_goal || prev_distance_ > frontier->min_distance) {
+  if (!same_goal || prev_distance_ > frontier.min_distance) {
     // we have different goal or we made some progress
     last_progress_ = ros::Time::now();
-    prev_distance_ = frontier->min_distance;
+    prev_distance_ = frontier.min_distance;
   }
   // black list if we've made no progress for a long time
   if (ros::Time::now() - last_progress_ > progress_timeout_) {
