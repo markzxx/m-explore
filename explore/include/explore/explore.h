@@ -113,6 +113,7 @@ private:
 
   bool finished = false;
   std::vector<bool> visited_flag(1e10, false);
+  std::vector<bool>& frontier_flag(1e10, false);
 };
 }
 

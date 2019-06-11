@@ -236,13 +236,14 @@ void Explore::makePlan()
     visited_flag[bfs.front()] = true;
 
     int cnt = 0;
+    unsigned nbr;
     while (!bfs.empty()) {
       unsigned int idx = bfs.front();
       bfs.pop();
 
       // iterate over 4-connected neighbourhood
       
-      for (unsigned nbr : nhood4(idx, *costmap_)) {
+      for (nbr : nhood4(idx, *costmap_)) {
         // add to queue all free, unvisited cells, use descending search in case
         // initialized on non-free cell
         if (map_[nbr] <= map_[idx] && !visited_flag[nbr]) {
@@ -266,7 +267,7 @@ void Explore::makePlan()
         // }
       // }
     }
-    frontier = buildNewFrontier(nbr, pos, frontier_flag);
+    frontier = search_.buildNewFrontier(nbr, pos, frontier_flag);
     // this->front_list = {new_frontier};
     // frontier = this->front_list.begin();
 
