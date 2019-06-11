@@ -24,6 +24,13 @@ FrontierSearch::FrontierSearch(costmap_2d::Costmap2D* costmap,
 {
 }
 
+void FrontierSearch::reset(){
+  bfs.clear();
+  visited_flag.clear();
+  frontier_flag.clear();
+  frontiers.clear();
+}
+
 std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
 {
   // std::vector<Frontier> frontier_list;

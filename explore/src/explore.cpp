@@ -223,15 +223,10 @@ void Explore::makePlan()
     // auto frontier = this->list[this->index];
     auto pose = costmap_client_.getRobotPose();
     auto frontiers = search_.revisit(pose.position);
-    ROS_DEBUG("found %lu frontiers", frontiers.size());
-    for (size_t i = 0; i < frontiers.size(); ++i) {
-      ROS_DEBUG("frontier %zd cost: %f", i, frontiers[i].cost);
-    }
-
     if (frontiers.empty()) {
       // stop();
       finished = true;
-      ROS_DEBUG("[Boris]FINISHED!");
+      ROS_DEBUG("[Boris]IMPOSSIBLE!");
       makePlan();
       return;
     }
@@ -253,6 +248,7 @@ void Explore::makePlan()
     if (frontier_iter == frontiers.end()){
       frontier_blacklist_.clear();
       this->finished = false;
+      search_.reset();
       makePlan();
       return;
     }
