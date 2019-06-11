@@ -221,53 +221,8 @@ void Explore::makePlan()
   else{
     // this->index = (this->index + 1) % this->list.size();
     // auto frontier = this->list[this->index];
-    auto costmap_ = costmap_client_.getCostmap();
-    std::queue<unsigned int> bfs;
-    auto map_ = costmap_->getCharMap();
-
-    // find closest clear cell to start search
-    unsigned int clear, pos = costmap_->getIndex(mx, my);
-    if (nearestCell(clear, pos, FREE_SPACE, *costmap_)) {
-      bfs.push(clear);
-    } else {
-      bfs.push(pos);
-      ROS_WARN("Could not find nearby clear cell to start search");
-    }
-    visited_flag[bfs.front()] = true;
-
-    int cnt = 0;
-    unsigned nbr;
-    while (!bfs.empty()) {
-      unsigned int idx = bfs.front();
-      bfs.pop();
-
-      // iterate over 4-connected neighbourhood
-      
-      for (nbr : nhood4(idx, *costmap_)) {
-        // add to queue all free, unvisited cells, use descending search in case
-        // initialized on non-free cell
-        if (map_[nbr] <= map_[idx] && !visited_flag[nbr]) {
-          visited_flag[nbr] = true;
-          bfs.push(nbr);
-          // check if cell is new frontier cell (unvisited, NO_INFORMATION, free
-          // neighbour)
-        }
-        else{
-          cnt++;
-        }
-      }
-
-      // if (isNewFrontierCell(nbr, frontier_flag)) {
-        // frontier_flag[nbr] = true;
-      if (cnt >= 100) break;
-      
-        // if (new_frontier.size * costmap_->getResolution() >=
-            // min_frontier_size_) {
-          // frontier_list.push_back(new_frontier);
-        // }
-      // }
-    }
-    frontier = search_.buildNewFrontier(nbr, pos, frontier_flag);
+    
+    frontier = search_.revisit();
     // this->front_list = {new_frontier};
     // frontier = this->front_list.begin();
 
