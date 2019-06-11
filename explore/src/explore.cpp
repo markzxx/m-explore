@@ -215,7 +215,7 @@ void Explore::makePlan()
       makePlan();
       return;
     }
-    front_list.push_back(*frontier);
+    front_list.push_back(*frontier_iter);
     frontier = *frontier_iter;
   }
   else{
