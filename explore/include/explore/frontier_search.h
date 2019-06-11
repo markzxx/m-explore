@@ -37,6 +37,8 @@ public:
   FrontierSearch(costmap_2d::Costmap2D* costmap, double potential_scale,
                  double gain_scale, double min_frontier_size);
 
+  void reset();
+
   /**
    * @brief Runs search implementation, outward from the start position
    * @param position Initial position to search from
