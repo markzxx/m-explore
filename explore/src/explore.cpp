@@ -250,6 +250,10 @@ void Explore::makePlan()
     ROS_DEBUG("[Boris]HAD A NEW LOACATION");
     // this->front_list = {new_frontier};
     // frontier = this->front_list.begin();
+    if (frontier_iter == frontiers.end()){
+
+      return;
+    }
     frontier = *frontier_iter;
   }
 
@@ -273,6 +277,8 @@ void Explore::makePlan()
 
   // we don't need to do anything if we still pursuing the same goal
   if (same_goal) {
+    frontier_blacklist_.clear();
+    makePlan();
     return;
   }
 
