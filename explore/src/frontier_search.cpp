@@ -84,7 +84,7 @@ Frontier FrontierSearch::revisit(geometry_msgs::Point position)
       }
       if (cnt >= 100) break;      
     }
-    frontier = buildNewFrontier(nbr, pos, frontier_flag);
+    auto frontier = buildNewFrontier(nbr, pos, frontier_flag);
     return frontier;
 }
 
