@@ -77,12 +77,17 @@ protected:
    */
   double frontierCost(const Frontier& frontier);
 
+  Frontier revisit(geometry_msgs::Point position);
+
 private:
   costmap_2d::Costmap2D* costmap_;
   unsigned char* map_;
   unsigned int size_x_, size_y_;
   double potential_scale_, gain_scale_;
   double min_frontier_size_;
+  std::queue<unsigned int> bfs;
+  std::vector<bool> visited_flag(1e10, false);
+  std::vector<bool>& frontier_flag(1e10, false);
 };
 }
 #endif

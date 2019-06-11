@@ -24,6 +24,70 @@ FrontierSearch::FrontierSearch(costmap_2d::Costmap2D* costmap,
 {
 }
 
+Frontier FrontierSearch::revisit(geometry_msgs::Point position)
+{
+  // std::vector<Frontier> frontier_list;
+  Frontier a;
+
+  // Sanity check that robot is inside costmap bounds before searching
+  unsigned int mx, my;
+  if (!costmap_->worldToMap(position.x, position.y, mx, my)) {
+    ROS_ERROR("Robot out of costmap bounds, cannot search for frontiers");
+    return a;
+  }
+
+  // make sure map is consistent and locked for duration of search
+  std::lock_guard<costmap_2d::Costmap2D::mutex_t> lock(*(costmap_->getMutex()));
+
+  map_ = costmap_->getCharMap();
+  size_x_ = costmap_->getSizeInCellsX();
+  size_y_ = costmap_->getSizeInCellsY();
+
+  // initialize flag arrays to keep track of visited and frontier cells
+  // std::vector<bool> frontier_flag(size_x_ * size_y_, false);
+  // std::vector<bool> visited_flag(size_x_ * size_y_, false);
+
+  // initialize breadth first search
+  // std::queue<unsigned int> bfs;
+    // auto map_ = costmap_->getCharMap();
+
+    // find closest clear cell to start search
+    unsigned int clear, pos = costmap_->getIndex(mx, my);
+    if (nearestCell(clear, pos, FREE_SPACE, *costmap_)) {
+      bfs.push(clear);
+    } else {
+      bfs.push(pos);
+      ROS_WARN("Could not find nearby clear cell to start search");
+    }
+    visited_flag[bfs.front()] = true;
+
+    int cnt = 0;
+    unsigned nbr;
+    while (!bfs.empty()) {
+      unsigned int idx = bfs.front();
+      bfs.pop();
+
+      // iterate over 4-connected neighbourhood
+      
+      for (nbr : nhood4(idx, *costmap_)) {
+        // add to queue all free, unvisited cells, use descending search in case
+        // initialized on non-free cell
+        if (map_[nbr] <= map_[idx] && !visited_flag[nbr]) {
+          visited_flag[nbr] = true;
+          bfs.push(nbr);
+          // check if cell is new frontier cell (unvisited, NO_INFORMATION, free
+          // neighbour)
+        }
+        else{
+          cnt++;
+        }
+      }
+      if (cnt >= 100) break;      
+    }
+    frontier = buildNewFrontier(nbr, pos, frontier_flag);
+    return frontier;
+}
+
 std::vector<Frontier> FrontierSearch::searchFrom(geometry_msgs::Point position)
 {
   std::vector<Frontier> frontier_list;
