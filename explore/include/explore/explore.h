@@ -112,6 +112,7 @@ private:
   std::vector<frontier_exploration::Frontier> list;
 
   bool finished = false;
+  std::vector<bool> visited_flag(1e10, false);
 };
 }
 
