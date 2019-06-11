@@ -59,7 +59,7 @@ std::vector<Frontier> FrontierSearch::searchFrom(geometry_msgs::Point position)
   }
   visited_flag[bfs.front()] = true;
 
-  if (!this->finished){
+  // if (!this->finished){
   while (!bfs.empty()) {
       unsigned int idx = bfs.front();
       bfs.pop();
@@ -83,9 +83,6 @@ std::vector<Frontier> FrontierSearch::searchFrom(geometry_msgs::Point position)
         }
       }
     }
-  }
-  else{
-    
   }
 
   // set costs of frontiers
