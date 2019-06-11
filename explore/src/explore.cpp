@@ -220,7 +220,7 @@ void Explore::makePlan()
   }
   else{
     this->index = (this->index + 1) % this->list.size();
-    frontier = &this->list[this->index];
+    frontier = this->list[this->index];
   }
 
   geometry_msgs::Point target_position = frontier.centroid;
