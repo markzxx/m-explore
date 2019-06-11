@@ -250,7 +250,7 @@ void Explore::makePlan()
     ROS_DEBUG("[Boris]HAD A NEW LOACATION");
     // this->front_list = {new_frontier};
     // frontier = this->front_list.begin();
-
+    frontier = *frontier_iter;
   }
 
   geometry_msgs::Point target_position = frontier.centroid;
