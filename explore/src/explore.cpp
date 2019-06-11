@@ -267,8 +267,8 @@ void Explore::makePlan()
       // }
     }
     Frontier new_frontier = buildNewFrontier(nbr, pos, frontier_flag);
-    this->list = {new_frontier};
-    frontier = this->list.begin();
+    this->front_list = {new_frontier};
+    frontier = this->front_list.begin();
 
   }
 
