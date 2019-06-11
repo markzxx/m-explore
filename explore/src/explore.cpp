@@ -180,7 +180,7 @@ void Explore::makePlan()
 {
   // find frontiers
   Frontier frontier;
-  if (!this->finished){
+  if (!finished){
     auto pose = costmap_client_.getRobotPose();
     // get frontiers sorted according to cost
     auto frontiers = search_.searchFrom(pose.position);
@@ -191,7 +191,7 @@ void Explore::makePlan()
 
     if (frontiers.empty()) {
       // stop();
-      this->finished = true;
+      finished = true;
       ROS_DEBUG("[Boris]FINISHED!");
       makePlan();
       return;
@@ -210,7 +210,7 @@ void Explore::makePlan()
                          });
     if (frontier_iter == frontiers.end()) {
       // stop();
-      this->finished = true;
+      finished = true;
       ROS_DEBUG("[Boris]FINISHED!");
       makePlan();
       return;
@@ -219,8 +219,8 @@ void Explore::makePlan()
     frontier = *frontier_iter;
   }
   else{
-    this->index = (this->index + 1) % this->list.size();
-    frontier = this->list[this->index];
+    index = (index + 1) % list.size();
+    frontier = list[index];
   }
 
   geometry_msgs::Point target_position = frontier.centroid;
