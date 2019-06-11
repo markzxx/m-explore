@@ -44,7 +44,7 @@ public:
    */
   std::vector<Frontier> searchFrom(geometry_msgs::Point position);
 
-  Frontier revisit(geometry_msgs::Point position);
+  std::vector<Frontier> revisit(geometry_msgs::Point position);
 
 protected:
   /**

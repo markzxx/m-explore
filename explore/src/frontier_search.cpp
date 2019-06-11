@@ -82,11 +82,12 @@ Frontier FrontierSearch::revisit(geometry_msgs::Point position)
           cnt++;
         }
       }
-      if (cnt >= 100) break;      
+      if (cnt >= 1000) break;      
     }
     auto frontier = buildNewFrontier(nbr, pos, frontier_flag);
+    frontiers.push_back(frontier);
     ROS_DEBUG("[Boris]FOUND A NEW LOCATION");
-    return frontier;
+    return frontiers;
 }
 
 std::vector<Frontier> FrontierSearch::searchFrom(geometry_msgs::Point position)
@@ -159,7 +160,7 @@ std::vector<Frontier> FrontierSearch::searchFrom(geometry_msgs::Point position)
   return frontier_list;
 }
 
-Frontier FrontierSearch::buildNewFrontier(unsigned int initial_cell,
+std::vector<Frontier> FrontierSearch::buildNewFrontier(unsigned int initial_cell,
                                           unsigned int reference,
                                           std::vector<bool>& frontier_flag)
 {

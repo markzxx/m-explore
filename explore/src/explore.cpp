@@ -222,7 +222,31 @@ void Explore::makePlan()
     // this->index = (this->index + 1) % this->list.size();
     // auto frontier = this->list[this->index];
     auto pose = costmap_client_.getRobotPose();
-    frontier = search_.revisit(pose.position);
+    auto frontiers = search_.revisit(pose.position);
+    ROS_DEBUG("found %lu frontiers", frontiers.size());
+    for (size_t i = 0; i < frontiers.size(); ++i) {
+      ROS_DEBUG("frontier %zd cost: %f", i, frontiers[i].cost);
+    }
+
+    if (frontiers.empty()) {
+      // stop();
+      finished = true;
+      ROS_DEBUG("[Boris]FINISHED!");
+      makePlan();
+      return;
+    }
+
+    // publish frontiers as visualization markers
+    if (visualize_) {
+      visualizeFrontiers(frontiers);
+    }
+
+    // find non blacklisted frontier
+    auto frontier_iter =
+        std::find_if_not(frontiers.begin(), frontiers.end(),
+                         [this](const frontier_exploration::Frontier& f) {
+                           return goalOnBlacklist(f.centroid);
+                         });
     ROS_DEBUG("[Boris]HAD A NEW LOACATION");
     // this->front_list = {new_frontier};
     // frontier = this->front_list.begin();
@@ -240,12 +264,12 @@ void Explore::makePlan()
     prev_distance_ = frontier.min_distance;
   }
   // black list if we've made no progress for a long time
-  // if (ros::Time::now() - last_progress_ > progress_timeout_) {
-  //   frontier_blacklist_.push_back(target_position);
-  //   ROS_DEBUG("Adding current goal to black list");
-  //   makePlan();
-  //   return;
-  // }
+  if (ros::Time::now() - last_progress_ > progress_timeout_) {
+    frontier_blacklist_.push_back(target_position);
+    ROS_DEBUG("Adding current goal to black list");
+    makePlan();
+    return;
+  }
 
   // we don't need to do anything if we still pursuing the same goal
   if (same_goal) {
