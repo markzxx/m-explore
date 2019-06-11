@@ -24,7 +24,7 @@ FrontierSearch::FrontierSearch(costmap_2d::Costmap2D* costmap,
 {
 }
 
-Frontier FrontierSearch::revisit(geometry_msgs::Point position)
+std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
 {
   // std::vector<Frontier> frontier_list;
   Frontier a;
