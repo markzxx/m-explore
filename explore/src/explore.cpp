@@ -221,7 +221,7 @@ void Explore::makePlan()
   else{
     // this->index = (this->index + 1) % this->list.size();
     // auto frontier = this->list[this->index];
-    auto costmap_ = costmap_client_.getCostmap()
+    auto costmap_ = costmap_client_.getCostmap();
     std::queue<unsigned int> bfs;
     auto map_ = costmap_->getCharMap();
 
