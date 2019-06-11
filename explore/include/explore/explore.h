@@ -112,8 +112,8 @@ private:
   std::vector<frontier_exploration::Frontier> front_list;
 
   bool finished = false;
-  std::vector<bool> visited_flag(1000000, false);
-  std::vector<bool> frontier_flag(1000000, false);
+  std::vector<bool> visited_flag = std::vector<bool>(1000000, false);
+  std::vector<bool> frontier_flag = std::vector<bool>(1000000, false);
 };
 }
 

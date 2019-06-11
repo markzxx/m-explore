@@ -44,6 +44,8 @@ public:
    */
   std::vector<Frontier> searchFrom(geometry_msgs::Point position);
 
+  Frontier revisit(geometry_msgs::Point position);
+
 protected:
   /**
    * @brief Starting from an initial cell, build a frontier from valid adjacent
@@ -77,7 +79,7 @@ protected:
    */
   double frontierCost(const Frontier& frontier);
 
-  Frontier revisit(geometry_msgs::Point position);
+  
 
 private:
   costmap_2d::Costmap2D* costmap_;
@@ -86,8 +88,8 @@ private:
   double potential_scale_, gain_scale_;
   double min_frontier_size_;
   std::queue<unsigned int> bfs;
-  std::vector<bool> visited_flag(1000000, false);
-  std::vector<bool> frontier_flag(1000000, false);
+  std::vector<bool> visited_flag = std::vector<bool>(1000000, false);
+  std::vector<bool> frontier_flag = std::vector<bool>(1000000, false);
 };
 }
 #endif
