@@ -188,7 +188,7 @@ void Explore::makePlan()
   }
 
   if (frontiers.empty()) {
-    stop();
+    makePlan();
     return;
   }
 
@@ -204,7 +204,7 @@ void Explore::makePlan()
                          return goalOnBlacklist(f.centroid);
                        });
   if (frontier == frontiers.end()) {
-    stop();
+    makePlan();
     return;
   }
   geometry_msgs::Point target_position = frontier->centroid;
@@ -212,7 +212,7 @@ void Explore::makePlan()
   // time out if we are not making any progress
   bool same_goal = prev_goal_ == target_position;
   prev_goal_ = target_position;
-  if (!same_goal || prev_distance_ > frontier->min_distance) {
+  if (!same_goal) {
     // we have different goal or we made some progress
     last_progress_ = ros::Time::now();
     prev_distance_ = frontier->min_distance;
@@ -230,12 +230,9 @@ void Explore::makePlan()
     return;
   }
 
-  geometry_msgs::Point p;
-  p.x=0;
-  p.y=0;
   // send goal to move_base if we have something new to pursue
   move_base_msgs::MoveBaseGoal goal;
-  goal.target_pose.pose.position = p;
+  goal.target_pose.pose.position = target_position;
   goal.target_pose.pose.orientation.w = 1.;
   goal.target_pose.header.frame_id = costmap_client_.getGlobalFrameID();
   goal.target_pose.header.stamp = ros::Time::now();
