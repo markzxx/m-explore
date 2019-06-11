@@ -25,7 +25,7 @@ FrontierSearch::FrontierSearch(costmap_2d::Costmap2D* costmap,
 }
 
 void FrontierSearch::reset(){
-  bfs = queue<unsigned int>();
+  bfs = std::queue<unsigned int>();
   visited_flag.clear();
   frontier_flag.clear();
   frontiers.clear();
