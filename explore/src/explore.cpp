@@ -203,7 +203,7 @@ void Explore::makePlan()
     }
 
     // find non blacklisted frontier
-    frontier_iter =
+    auto frontier_iter =
         std::find_if_not(frontiers.begin(), frontiers.end(),
                          [this](const frontier_exploration::Frontier& f) {
                            return goalOnBlacklist(f.centroid);
@@ -222,6 +222,7 @@ void Explore::makePlan()
     this->index = (this->index + 1) % this->list.size();
     frontier = &this->list[this->index];
   }
+
   geometry_msgs::Point target_position = frontier.centroid;
 
   // time out if we are not making any progress
