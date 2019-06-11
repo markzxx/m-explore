@@ -109,7 +109,7 @@ private:
   ros::Duration progress_timeout_;
   bool visualize_;
   int index = 0;
-  std::vector<frontier_exploration::Frontier> list;
+  std::vector<frontier_exploration::Frontier> front_list;
 
   bool finished = false;
   std::vector<bool> visited_flag(1e10, false);
