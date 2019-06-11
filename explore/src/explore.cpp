@@ -192,6 +192,7 @@ void Explore::makePlan()
       // stop();
       this->finished = true;
       ROS_DEBUG("[Boris]FINISHED!");
+      makePlan();
       return;
     }
 
@@ -201,7 +202,7 @@ void Explore::makePlan()
     }
 
     // find non blacklisted frontier
-    auto frontier =
+    frontier_exploration::Frontier frontier =
         std::find_if_not(frontiers.begin(), frontiers.end(),
                          [this](const frontier_exploration::Frontier& f) {
                            return goalOnBlacklist(f.centroid);
@@ -210,6 +211,7 @@ void Explore::makePlan()
       // stop();
       this->finished = true;
       ROS_DEBUG("[Boris]FINISHED!");
+      makePlan();
       return;
     }
     this->list.push_back(frontier);

@@ -109,7 +109,8 @@ private:
   ros::Duration progress_timeout_;
   bool visualize_;
   int index = 0;
-  std::vector<frontier_exploration::Frontier*> list;
+  std::vector<frontier_exploration::Frontier> list;
+
   bool finished = false;
 };
 }
