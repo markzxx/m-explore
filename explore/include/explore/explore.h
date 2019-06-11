@@ -114,7 +114,7 @@ private:
   bool finished = false;
   std::vector<bool> visited_flag = std::vector<bool>(1000000, false);
   std::vector<bool> frontier_flag = std::vector<bool>(1000000, false);
-  std::vector<Frontier> frontiers;
+  
 };
 }
 
