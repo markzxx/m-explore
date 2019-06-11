@@ -110,6 +110,7 @@ private:
   bool visualize_;
   bool finished = false;
   vector<Frontier> list;
+  int index = 0;
 };
 }
 
