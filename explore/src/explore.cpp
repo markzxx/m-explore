@@ -251,7 +251,9 @@ void Explore::makePlan()
     // this->front_list = {new_frontier};
     // frontier = this->front_list.begin();
     if (frontier_iter == frontiers.end()){
-
+      frontier_blacklist_.clear();
+      this->finished = false;
+      makePlan();
       return;
     }
     frontier = *frontier_iter;
@@ -277,8 +279,6 @@ void Explore::makePlan()
 
   // we don't need to do anything if we still pursuing the same goal
   if (same_goal) {
-    frontier_blacklist_.clear();
-    makePlan();
     return;
   }
 
