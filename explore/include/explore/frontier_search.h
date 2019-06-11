@@ -83,6 +83,7 @@ private:
   unsigned int size_x_, size_y_;
   double potential_scale_, gain_scale_;
   double min_frontier_size_;
+  bool finished = false;
 };
 }
 #endif

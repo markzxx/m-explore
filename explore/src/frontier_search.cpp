@@ -59,28 +59,33 @@ std::vector<Frontier> FrontierSearch::searchFrom(geometry_msgs::Point position)
   }
   visited_flag[bfs.front()] = true;
 
+  if (!this->finished){
   while (!bfs.empty()) {
-    unsigned int idx = bfs.front();
-    bfs.pop();
+      unsigned int idx = bfs.front();
+      bfs.pop();
 
-    // iterate over 4-connected neighbourhood
-    for (unsigned nbr : nhood4(idx, *costmap_)) {
-      // add to queue all free, unvisited cells, use descending search in case
-      // initialized on non-free cell
-      if (map_[nbr] <= map_[idx] && !visited_flag[nbr]) {
-        visited_flag[nbr] = true;
-        bfs.push(nbr);
-        // check if cell is new frontier cell (unvisited, NO_INFORMATION, free
-        // neighbour)
-      } else if (isNewFrontierCell(nbr, frontier_flag)) {
-        frontier_flag[nbr] = true;
-        Frontier new_frontier = buildNewFrontier(nbr, pos, frontier_flag);
-        if (new_frontier.size * costmap_->getResolution() >=
-            min_frontier_size_) {
-          frontier_list.push_back(new_frontier);
+      // iterate over 4-connected neighbourhood
+      for (unsigned nbr : nhood4(idx, *costmap_)) { //nhood4 neighborhood of 4
+        // add to queue all free, unvisited cells, use descending search in case
+        // initialized on non-free cell
+        if (map_[nbr] <= map_[idx] && !visited_flag[nbr]) {
+          visited_flag[nbr] = true;
+          bfs.push(nbr);
+          // check if cell is new frontier cell (unvisited, NO_INFORMATION, free
+          // neighbour)
+        } else if (isNewFrontierCell(nbr, frontier_flag)) {
+          frontier_flag[nbr] = true;
+          Frontier new_frontier = buildNewFrontier(nbr, pos, frontier_flag);
+          if (new_frontier.size * costmap_->getResolution() >=
+              min_frontier_size_) {
+            frontier_list.push_back(new_frontier);
+          }
         }
       }
     }
+  }
+  else{
+    
   }
 
   // set costs of frontiers
@@ -90,6 +95,13 @@ std::vector<Frontier> FrontierSearch::searchFrom(geometry_msgs::Point position)
   std::sort(
       frontier_list.begin(), frontier_list.end(),
       [](const Frontier& f1, const Frontier& f2) { return f1.cost < f2.cost; });
+
+  // edit by us
+  if (frontier.size() == 0)
+  {
+    this->finished = true;
+    return this->searchFrom(geometry_msgs::Point position);
+  }
 
   return frontier_list;
 }
