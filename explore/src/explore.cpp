@@ -221,8 +221,8 @@ void Explore::makePlan()
   else{
     // this->index = (this->index + 1) % this->list.size();
     // auto frontier = this->list[this->index];
-    
-    frontier = search_.revisit();
+    auto pose = costmap_client_.getRobotPose();
+    frontier = search_.revisit(pose.position);
     // this->front_list = {new_frontier};
     // frontier = this->front_list.begin();
 

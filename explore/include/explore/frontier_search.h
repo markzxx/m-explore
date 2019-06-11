@@ -86,8 +86,8 @@ private:
   double potential_scale_, gain_scale_;
   double min_frontier_size_;
   std::queue<unsigned int> bfs;
-  std::vector<bool> visited_flag(1e10, false);
-  std::vector<bool>& frontier_flag(1e10, false);
+  std::vector<bool> visited_flag(1000000, false);
+  std::vector<bool> frontier_flag(1000000, false);
 };
 }
 #endif
