@@ -179,7 +179,7 @@ void Explore::visualizeFrontiers(
 void Explore::makePlan()
 {
   // find frontiers
-  frontier_exploration::Frontier frontier;
+  frontier_exploration::Frontier* frontier;
   if (!this->finished){
     auto pose = costmap_client_.getRobotPose();
     // get frontiers sorted according to cost
