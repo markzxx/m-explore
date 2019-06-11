@@ -27,13 +27,13 @@ FrontierSearch::FrontierSearch(costmap_2d::Costmap2D* costmap,
 std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
 {
   // std::vector<Frontier> frontier_list;
-  Frontier a;
+  std::vector<Frontier> frontier_list;
 
   // Sanity check that robot is inside costmap bounds before searching
   unsigned int mx, my;
   if (!costmap_->worldToMap(position.x, position.y, mx, my)) {
     ROS_ERROR("Robot out of costmap bounds, cannot search for frontiers");
-    return a;
+    return frontier_list;
   }
 
   // make sure map is consistent and locked for duration of search
