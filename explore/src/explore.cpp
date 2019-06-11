@@ -223,6 +223,7 @@ void Explore::makePlan()
     // auto frontier = this->list[this->index];
     auto pose = costmap_client_.getRobotPose();
     frontier = search_.revisit(pose.position);
+    ROS_DEBUG("[Boris]HAD A NEW LOACATION");
     // this->front_list = {new_frontier};
     // frontier = this->front_list.begin();
 

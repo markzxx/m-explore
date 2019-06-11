@@ -85,6 +85,7 @@ Frontier FrontierSearch::revisit(geometry_msgs::Point position)
       if (cnt >= 100) break;      
     }
     auto frontier = buildNewFrontier(nbr, pos, frontier_flag);
+    ROS_DEBUG("[Boris]FOUND A NEW LOCATION");
     return frontier;
 }
 
