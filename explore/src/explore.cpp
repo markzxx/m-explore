@@ -77,7 +77,7 @@ Explore::Explore()
     marker_array_publisher_ =
         private_nh_.advertise<visualization_msgs::MarkerArray>("frontiers", 10);
   }
-
+  save_pub_ = relative_nh_.advertise<std_msgs::Bool>("/pokemon_go/save", 1);
   ROS_INFO("Waiting to connect to move_base server");
   move_base_client_.waitForServer();
   ROS_INFO("Connected to move_base server");
@@ -244,10 +244,15 @@ void Explore::makePlan()
     // this->front_list = {new_frontier};
     // frontier = this->front_list.begin();
     if (frontier_iter == frontiers.end()){
-      frontier_blacklist_.clear();
-      this->finished = false;
-      search_.reset();
-      goto beginning;
+      std_msgs::Bool save;
+      save.data = true;
+      save_pub_.publish(save);
+      return;
+//      frontier_blacklist_.clear();
+//      this->finished = false;
+//      search_.reset();
+//      goto beginning;
+
     }
     frontier = *frontier_iter;
   }
