@@ -281,6 +281,7 @@ void Explore::makePlan()
   }
 
   // send goal to move_base if we have something new to pursue
+  ROS_DEBUG("[BORIS]SENT TO BASE MOVE")
   move_base_msgs::MoveBaseGoal goal;
   goal.target_pose.pose.position = target_position;
   goal.target_pose.pose.orientation.w = 1.;
