@@ -66,6 +66,7 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
       bfs.push(pos);
       ROS_WARN("Could not find nearby clear cell to start search");
     }
+    visited_flag.resize(map_.size());
     visited_flag[bfs.front()] = true;
 
     int cnt = 0;
