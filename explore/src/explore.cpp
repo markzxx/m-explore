@@ -244,15 +244,15 @@ void Explore::makePlan()
     // this->front_list = {new_frontier};
     // frontier = this->front_list.begin();
     if (frontier_iter == frontiers.end()){
-      std_msgs::Bool save;
-      save.data = true;
-      save_pub_.publish(save);
-      ROS_DEBUG("[Mark]FINISH EXPLORATION");
-      return;
-//      frontier_blacklist_.clear();
-//      this->finished = false;
-//      search_.reset();
-//      goto beginning;
+//      std_msgs::Bool save;
+//      save.data = true;
+//      save_pub_.publish(save);
+//      ROS_DEBUG("[Mark]FINISH EXPLORATION");
+//      return;
+      frontier_blacklist_.clear();
+      this->finished = false;
+      search_.reset();
+      goto beginning;
 
     }
     frontier = *frontier_iter;
