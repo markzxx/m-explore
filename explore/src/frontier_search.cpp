@@ -79,21 +79,21 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
       for (auto nbr : nhood4(idx, *costmap_)) {
         // add to queue all free, unvisited cells, use descending search in case
         // initialized on non-free cell
-        if (map_[nbr] <= map_[idx] && !visited_flag[nbr]) {
+        if (map_[nbr] <= map_[idx] && !visited_flag[nbr] && cnt < 500) {
           visited_flag[nbr] = true;
           bfs.push(nbr);
+          cnt++;
           // check if cell is new frontier cell (unvisited, NO_INFORMATION, free
           // neighbour)
         }
         else{
-          cnt++;
+          auto frontier = buildNewFrontier(nbr, pos, frontier_flag);
+          frontiers.push_back(frontier);
+          ROS_DEBUG("[Boris]FOUND A NEW LOCATION");
         }
       }
-      if (cnt >= 1000) break;      
     }
-    auto frontier = buildNewFrontier(nbr, pos, frontier_flag);
-    frontiers.push_back(frontier);
-    ROS_DEBUG("[Boris]FOUND A NEW LOCATION");
+
     return frontiers;
 }
 
