@@ -51,8 +51,8 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
   size_y_ = costmap_->getSizeInCellsY();
 
   // initialize flag arrays to keep track of visited and frontier cells
-  frontier_flag.resize(size_x_ * size_y_);
-  visited_flag.resize(size_x_ * size_y_);
+  // std::vector<bool> frontier_flag(size_x_ * size_y_, false);
+  // std::vector<bool> visited_flag(size_x_ * size_y_, false);
 
   // initialize breadth first search
   // std::queue<unsigned int> bfs;
@@ -69,7 +69,7 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
     visited_flag[bfs.front()] = true;
 
     int cnt = 0;
-    unsigned nbr;
+    unsigned fnbr;
     while (!bfs.empty()) {
       unsigned int idx = bfs.front();
       bfs.pop();
@@ -79,7 +79,7 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
       for (auto nbr : nhood4(idx, *costmap_)) {
         // add to queue all free, unvisited cells, use descending search in case
         // initialized on non-free cell
-        if (map_[nbr] <= map_[idx] && !visited_flag[nbr] && cnt < 1000) {
+        if (map_[nbr] <= map_[idx] && !visited_flag[nbr] && cnt <500) {
           visited_flag[nbr] = true;
           bfs.push(nbr);
           cnt++;
@@ -87,11 +87,13 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
           // neighbour)
         }
         else{
-          break;
+          fnbr = nbr;
+          goto loop;
         }
       }
     }
-    auto frontier = buildNewFrontier(nbr, pos, frontier_flag);
+  loop:
+    auto frontier = buildNewFrontier(fnbr, pos, frontier_flag);
     frontiers.push_back(frontier);
     ROS_DEBUG("[Boris]FOUND A NEW LOCATION");
     return frontiers;
@@ -115,10 +117,12 @@ std::vector<Frontier> FrontierSearch::searchFrom(geometry_msgs::Point position)
   size_x_ = costmap_->getSizeInCellsX();
   size_y_ = costmap_->getSizeInCellsY();
 
-  // initialize breadth first search
-  std::queue<unsigned int> bfs;
+  // initialize flag arrays to keep track of visited and frontier cells
   std::vector<bool> frontier_flag(size_x_ * size_y_, false);
   std::vector<bool> visited_flag(size_x_ * size_y_, false);
+
+  // initialize breadth first search
+  std::queue<unsigned int> bfs;
 
   // find closest clear cell to start search
   unsigned int clear, pos = costmap_->getIndex(mx, my);
