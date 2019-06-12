@@ -87,13 +87,13 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
           // neighbour)
         }
         else{
-          auto frontier = buildNewFrontier(nbr, pos, frontier_flag);
-          frontiers.push_back(frontier);
-          ROS_DEBUG("[Boris]FOUND A NEW LOCATION");
+          break;
         }
       }
     }
-
+    auto frontier = buildNewFrontier(nbr, pos, frontier_flag);
+    frontiers.push_back(frontier);
+    ROS_DEBUG("[Boris]FOUND A NEW LOCATION");
     return frontiers;
 }
 
