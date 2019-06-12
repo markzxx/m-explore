@@ -79,7 +79,7 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
       for (auto nbr : nhood4(idx, *costmap_)) {
         // add to queue all free, unvisited cells, use descending search in case
         // initialized on non-free cell
-        if (map_[nbr] <= map_[idx] && !visited_flag[nbr] && cnt < 500) {
+        if (map_[nbr] <= map_[idx] && !visited_flag[nbr] && cnt < 1000) {
           visited_flag[nbr] = true;
           bfs.push(nbr);
           cnt++;
