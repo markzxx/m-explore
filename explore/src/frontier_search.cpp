@@ -51,8 +51,8 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
   size_y_ = costmap_->getSizeInCellsY();
 
   // initialize flag arrays to keep track of visited and frontier cells
-  // std::vector<bool> frontier_flag(size_x_ * size_y_, false);
-  // std::vector<bool> visited_flag(size_x_ * size_y_, false);
+  std::vector<bool> frontier_flag(size_x_ * size_y_, false);
+  std::vector<bool> visited_flag(size_x_ * size_y_, false);
 
   // initialize breadth first search
   // std::queue<unsigned int> bfs;
@@ -66,7 +66,6 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
       bfs.push(pos);
       ROS_WARN("Could not find nearby clear cell to start search");
     }
-    visited_flag.resize(map_.size());
     visited_flag[bfs.front()] = true;
 
     int cnt = 0;
@@ -115,10 +114,6 @@ std::vector<Frontier> FrontierSearch::searchFrom(geometry_msgs::Point position)
   map_ = costmap_->getCharMap();
   size_x_ = costmap_->getSizeInCellsX();
   size_y_ = costmap_->getSizeInCellsY();
-
-  // initialize flag arrays to keep track of visited and frontier cells
-  std::vector<bool> frontier_flag(size_x_ * size_y_, false);
-  std::vector<bool> visited_flag(size_x_ * size_y_, false);
 
   // initialize breadth first search
   std::queue<unsigned int> bfs;
