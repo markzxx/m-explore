@@ -76,7 +76,7 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
 
       // iterate over 4-connected neighbourhood
       
-      for (nbr : nhood4(idx, *costmap_)) {
+      for (auto nbr : nhood4(idx, *costmap_)) {
         // add to queue all free, unvisited cells, use descending search in case
         // initialized on non-free cell
         if (map_[nbr] <= map_[idx] && !visited_flag[nbr]) {
