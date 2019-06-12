@@ -194,8 +194,7 @@ void Explore::makePlan()
       // stop();
       finished = true;
       ROS_DEBUG("[Boris]FINISHED!");
-      makePlan();
-      return;
+      goto beginning;
     }
 
     // publish frontiers as visualization markers
@@ -213,8 +212,7 @@ void Explore::makePlan()
       // stop();
       finished = true;
       ROS_DEBUG("[Boris]FINISHED!");
-      makePlan();
-      return;
+      goto beginning;
     }
     front_list.push_back(*frontier_iter);
     frontier = *frontier_iter;
@@ -228,8 +226,7 @@ void Explore::makePlan()
       // stop();
       finished = true;
       ROS_DEBUG("[Boris]IMPOSSIBLE!");
-      makePlan();
-      return;
+      goto beginning;
     }
 
     // publish frontiers as visualization markers
@@ -250,8 +247,6 @@ void Explore::makePlan()
       frontier_blacklist_.clear();
       this->finished = false;
       search_.reset();
-      // makePlan();
-      // return;
       goto beginning;
     }
     frontier = *frontier_iter;
@@ -271,8 +266,7 @@ void Explore::makePlan()
   if (ros::Time::now() - last_progress_ > progress_timeout_) {
     frontier_blacklist_.push_back(target_position);
     ROS_DEBUG("Adding current goal to black list");
-    makePlan();
-    return;
+    goto beginning;
   }
 
   // we don't need to do anything if we still pursuing the same goal
