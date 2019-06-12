@@ -3,6 +3,7 @@
 
 #include <costmap_2d/costmap_2d.h>
 #include <stack>
+#include <deque>
 
 namespace frontier_exploration
 {
@@ -90,7 +91,7 @@ private:
   unsigned int size_x_, size_y_;
   double potential_scale_, gain_scale_;
   double min_frontier_size_;
-  std::queue<unsigned int> bfs;
+  std::deque<unsigned int> bfs;
   std::vector<bool> visited_flag = std::vector<bool>(1000000, false);
   std::vector<bool> frontier_flag = std::vector<bool>(1000000, false);
   std::vector<Frontier> frontiers;

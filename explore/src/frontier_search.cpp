@@ -72,7 +72,7 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
     unsigned fnbr;
     while (!bfs.empty()) {
       unsigned int idx = bfs.front();
-      bfs.pop();
+      bfs.pop_front();
 
       // iterate over 4-connected neighbourhood
       
@@ -81,7 +81,7 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
         // initialized on non-free cell
         if (map_[nbr] <= map_[idx] && !visited_flag[nbr] && cnt <500) {
           visited_flag[nbr] = true;
-          bfs.push(nbr);
+          bfs.push_front(nbr);
           cnt++;
           // check if cell is new frontier cell (unvisited, NO_INFORMATION, free
           // neighbour)
