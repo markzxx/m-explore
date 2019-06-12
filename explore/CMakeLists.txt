@@ -55,7 +55,7 @@ add_executable(explore
 )
 add_dependencies(explore ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(explore ${catkin_LIBRARIES})
-
+add_library(cosmap_client src/costmap_client.cpp)
 #############
 ## Install ##
 #############

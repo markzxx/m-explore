@@ -31,4 +31,10 @@
   <depend>actionlib</depend>
 
   <test_depend>roslaunch</test_depend>
+
+  <export>
+        <!-- Other tools can request additional information be placed here -->
+    <cpp cflags="-I${prefix}/include" lflags="-L${prefix}/lib -lcosmap_client"/>
+  </export>
+
 </package>
