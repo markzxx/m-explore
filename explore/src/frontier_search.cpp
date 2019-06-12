@@ -61,9 +61,9 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
     // find closest clear cell to start search
     unsigned int clear, pos = costmap_->getIndex(mx, my);
     if (nearestCell(clear, pos, FREE_SPACE, *costmap_)) {
-      bfs.push(clear);
+      bfs.push_front(clear);
     } else {
-      bfs.push(pos);
+      bfs.push_front(pos);
       ROS_WARN("Could not find nearby clear cell to start search");
     }
     visited_flag[bfs.front()] = true;
