@@ -25,7 +25,7 @@ FrontierSearch::FrontierSearch(costmap_2d::Costmap2D* costmap,
 }
 
 void FrontierSearch::reset(){
-  bfs = std::queue<unsigned int>();
+  bfs = std::deque<unsigned int>();
   visited_flag.clear();
   frontier_flag.clear();
   frontiers.clear();
@@ -61,9 +61,9 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
     // find closest clear cell to start search
     unsigned int clear, pos = costmap_->getIndex(mx, my);
     if (nearestCell(clear, pos, FREE_SPACE, *costmap_)) {
-      bfs.push(clear);
+      bfs.push_front(clear);
     } else {
-      bfs.push(pos);
+      bfs.push_front(pos);
       ROS_WARN("Could not find nearby clear cell to start search");
     }
     visited_flag[bfs.front()] = true;
@@ -72,7 +72,7 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
     unsigned fnbr;
     while (!bfs.empty()) {
       unsigned int idx = bfs.front();
-      bfs.pop();
+      bfs.pop_front();
 
       // iterate over 4-connected neighbourhood
       
@@ -81,7 +81,7 @@ std::vector<Frontier> FrontierSearch::revisit(geometry_msgs::Point position)
         // initialized on non-free cell
         if (map_[nbr] <= map_[idx] && !visited_flag[nbr] && cnt <500) {
           visited_flag[nbr] = true;
-          bfs.push(nbr);
+          bfs.push_front(nbr);
           cnt++;
           // check if cell is new frontier cell (unvisited, NO_INFORMATION, free
           // neighbour)
